@@ -23,7 +23,7 @@ function create_vm() {
   cp ./$image_name /opt/kvm_pool
   mv /opt/kvm_pool/$image_name /opt/kvm_pool/$vm_name.img
   qemu-img resize /opt/kvm_pool/$vm_name.img $disk_size"G"
-  
+
   # Generate the hashed password and escape any $ characters in the hash
   hashed_password=$(echo "$password" | mkpasswd -m sha-512 -s)
 
@@ -35,9 +35,11 @@ hostname: $vm_name
 timezone: Asia/Tehran
 users:
   - name: $username
+    sudo: ALL=(ALL) ALL
     groups: [ sudo ]
     shell: /bin/bash
     lock_passwd: false
+    ssh_pwauth: True
     passwd: \"$hashed_password\"
 
 ntp:
@@ -45,6 +47,15 @@ ntp:
     - time1.google.com
     - time2.google.com
     - time3.google.com
+
+write_files:
+  - path: /etc/ssh/sshd_config
+    content: |
+      PasswordAuthentication yes
+      PermitRootLogin no  # Optional: Disable root login for security
+
+runcmd:
+  - systemctl restart sshd
 " > $vm_name-config
 
   echo "
@@ -86,7 +97,7 @@ function help_me() {
   echo "Initialize your KVM settings (nat.xml) and create the /opt/kvm_pool directory. Install the dependencies (qemu-img, mkpasswd, virt-install)."
   echo "Then you are good to go."
   echo "Example usage:"
-  echo "bash kvm-vm-manager.sh create debian12.img --hostname vmtest --cpu 1 --memory 1024 --disk 10 --ip 172.16.0.1 --gateway 172.16.0.254 --netmask 24 --username debian --password 123 --dns1 8.8.8.8 --dns2 4.2.2.4" 
+  echo "bash kvm-vm-manager.sh create debian12.img --hostname vmtest --cpu 1 --memory 1024 --disk 10 --ip 172.16.0.1 --gateway 172.16.0.254 --netmask 24 --username debian --password 123 --dns1 8.8.8.8 --dns2 4.2.2.4"
 }
 
 function kill_vm(){
@@ -106,7 +117,7 @@ function get_inputs() {
     case $1 in
       kill | remove | delete)
       kill_vm $2 && {
-        echo "$2 Vm removed." 
+        echo "$2 Vm removed."
         exit 1
       } || {
         echo Failed to Remove $2 VM.
@@ -114,7 +125,7 @@ function get_inputs() {
       ;;
       killall | removeall | deleteall)
       kill_allvm && {
-        echo "All Vms removed." 
+        echo "All Vms removed."
         exit 1
       } || {
         echo Failed to Remove all or some VMs.
