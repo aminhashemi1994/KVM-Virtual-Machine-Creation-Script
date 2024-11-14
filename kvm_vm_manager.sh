@@ -118,17 +118,19 @@ function get_inputs() {
       kill | remove | delete)
       kill_vm $2 && {
         echo "$2 Vm removed."
-        exit 1
+        exit 0
       } || {
         echo Failed to Remove $2 VM.
+        exit 1
       }
       ;;
       killall | removeall | deleteall)
       kill_allvm && {
         echo "All Vms removed."
-        exit 1
+        exit 0
       } || {
         echo Failed to Remove all or some VMs.
+        exit 1
       }
       ;;
       --ip)
