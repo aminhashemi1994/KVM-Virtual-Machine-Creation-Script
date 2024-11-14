@@ -29,7 +29,7 @@ sudo apt-get install qemu-utils whois virtinst
 
 ‍‍‍```bash
 bash kvm-vm-manager.sh create <image_name> --hostname <vm_name> --cpu <cpu_count> --memory <memory_size> --disk <disk_size> --ip <ip_address> --gateway <gateway> --netmask <netmask> --username <username> --password <password> --dns1 <dns1> --dns2 <dns2>
-``
+```
 ### Example usage:
 ```bash
 bash kvm-vm-manager.sh create debian12.img --hostname vmtest --cpu 1 --memory 1024 --disk 10 --ip 172.16.0.1 --gateway 172.16.0.254 --netmask 24 --username debian --password 123 --dns1 8.8.8.8 --dns2 4.2.2.4
