@@ -1,0 +1,11 @@
+<network>
+  <name>nat</name>
+  <forward mode='nat' dev='wlp3s0'/>
+  <bridge name="virbr0" stp="on" delay="0"/>
+  <ip address="172.16.0.254" netmask="255.255.255.0">
+    <dhcp>
+      <range start="172.16.0.1" end="172.16.0.253"/>
+    </dhcp>
+    <route gateway="172.16.0.254"/>
+  </ip>
+</network>
