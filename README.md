@@ -27,7 +27,7 @@ sudo apt-get install qemu-utils whois virtinst
 - Download a cloud-ready qcow2 image (Debian or Ubuntu) and place it in the same directory as this script.
 - Run the script with the following command:
 
-‍‍‍```bash
+```bash
 bash kvm-vm-manager.sh create <image_name> --hostname <vm_name> --cpu <cpu_count> --memory <memory_size> --disk <disk_size> --ip <ip_address> --gateway <gateway> --netmask <netmask> --username <username> --password <password> --dns1 <dns1> --dns2 <dns2>
 ```
 ### Example usage:
